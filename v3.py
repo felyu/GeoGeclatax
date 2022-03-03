@@ -192,6 +192,8 @@ def updateFunction(event):
     cachedPrimaryFunction = primaryFunctionDataset[-1]
     cachedSecondaryFunction = secondaryFunctionDataset[-1]
 
+    derivativeResult()
+
     # Si 1 des fonction est différente, regènère l'aperçu
     if cachedPrimaryFunction != primaryFunction.get() or cachedSecondaryFunction != secondaryFunction.get():
         print('None cached datasets')
@@ -395,26 +397,35 @@ Label(gui, text = "Extremums locaux :", **labelStyle).grid(row = 7, column = 0, 
 extremumsLabel = Label(gui, text = "", **labelStyle)
 extremumsLabel.grid(row = 7, column = 1, sticky = W, pady = 4)
 
+def derivativeResult():
+    x = derivativeInput.get()
+    # Obtient le bon dataset en fonction du choix fait 
+    if radioValue.get() == 1:
+        usedFunction = primaryFunction
+    else:
+        usedFunction = secondaryFunction
+    derivativeResult.set("est égal à :" + calculateDerivative(usedFunction,x))
 
-derivativePoint = IntVar()
+derivativeInput = IntVar()
+derivativeInput.set(5)
 derivativeContainer = Frame(gui, background='#111827')
 derivativeContainer.grid(row = 9, column = 0, pady = 4,sticky=N+S+E+W)
 Label(derivativeContainer, text = "Dérivée en x =", **labelStyle).grid(row = 0, column = 0, sticky = W, pady = 2)
-Entry(derivativeContainer, textvariable=derivativePoint fg="white", width=3, background='#111827',borderwidth=0,relief='flat',highlightthickness=0,font=("Comic Sans MS", 14,'bold')).grid(row = 0, column = 1, sticky = W, pady = 2, padx=4)
-Label(derivativeContainer, text = "est égal à :", **labelStyle).grid(row = 0, column = 3, sticky = W, pady = 2)
+Entry(derivativeContainer, textvariable=derivativeInput, fg="white", width=3, background='#111827',borderwidth=0,relief='flat',highlightthickness=0,font=("Comic Sans MS", 14,'bold')).grid(row = 0, column = 1, sticky = W, pady = 2, padx=4)
+derivativeResult = Label(derivativeContainer, text = "est égal à :", **labelStyle).grid(row = 0, column = 3, sticky = W, pady = 2)
+
+
 
 
 # Version en bas pour un max de professionalisme
-Label(gui, text="V 1.0.0 | Numéro de brevet : 123Soleil", fg='white', font=("Helvetica ", 10),justify='center',background='#111827').place(x=0, y=canvasWidthAndHeight-5, anchor='w')
+Label(gui, text="V 1.0.0", fg='white', font=("Helvetica ", 10),justify='center',background='#111827').place(x=0, y=canvasWidthAndHeight-5, anchor='w')
 
 # Init
 drawAxes()
 primaryFunctionDataset = drawFunction(primaryFunction.get(),functionColors[0],'f')
 secondaryFunctionDataset = drawFunction(secondaryFunction.get(),functionColors[1],'g')
-
 retrieveExtremums(primaryFunctionDataset)
 # drawFunction('5','red')
-
 
 # Splashscreen
 print("#########################################\n")
